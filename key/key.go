@@ -7,26 +7,18 @@ import (
 )
 
 func KeyListen(word string) {
-
-	if err := keyboard.Open(); err != nil {
-		panic(err)
-	}
-	defer func() {
-		_ = keyboard.Close()
-	}()
+	/*
+		this has to run forever
+		compare pressed key with word[i]
+		then lipgloss will do some like fucking coloring or something
+		i dunno
+	*/
 
 	for {
-		char, key, err := keyboard.GetKey()
+		char, _, err := keyboard.GetSingleKey()
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
 		}
-
-		go func() {
-			fmt.Printf("You pressed: rune %q, key %X\r\n", char, key)
-		}()
-
-		if key == keyboard.KeyEsc {
-			break
-		}
+		fmt.Printf("you pressed %q\n", char)
 	}
 }
