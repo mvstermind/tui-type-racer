@@ -16,7 +16,7 @@ func KeyListen(word string) {
 
 	// current character
 	index := 0
-	fmt.Println(NotTypedChar.Render(word))
+	fmt.Println(notTypedChar.Render(word))
 
 	// start timer as soon as it's printed
 	timer.StartTimer()
@@ -39,7 +39,7 @@ func KeyListen(word string) {
 
 		// compare current character with key pressed
 		if char == wordList[index] || wordList[index] == rune(keyboard.KeySpace) {
-			fmt.Printf("%s", ValidChar.Render(string(wordList[index])))
+			fmt.Printf("%s", validChar.Render(string(wordList[index])))
 
 			// reset mistake flag if a correct character is typed
 			mistakePrinted = false
@@ -49,7 +49,7 @@ func KeyListen(word string) {
 				fmt.Printf("\n")
 
 				m := fmt.Sprintf("Mistakes: %v", mistake)
-				fmt.Println(Mistakes.Render(m))
+				fmt.Println(mistakes.Render(m))
 
 				duration := timer.StopTimer()
 				wpm := calculateWPM(word, duration)
@@ -60,7 +60,7 @@ func KeyListen(word string) {
 		} else {
 			// print mistake only once
 			if !mistakePrinted {
-				fmt.Printf("%s", Mistakes.Render(string(wordList[index])))
+				fmt.Printf("%s", mistakes.Render(string(wordList[index])))
 				index++
 				mistake++
 				mistakePrinted = true
