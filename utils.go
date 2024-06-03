@@ -23,7 +23,7 @@ func generateList() []string {
 	var wg sync.WaitGroup
 
 	// this is so it will generate 20 words in the list
-	totalAmount := 2
+	totalAmount := 4
 
 	// start totalAmount goroutines
 	for i := 0; i < totalAmount; i++ {

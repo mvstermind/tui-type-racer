@@ -50,6 +50,10 @@ func KeyListen(word string) {
 
 				m := fmt.Sprintf("Mistakes: %v", mistake)
 				fmt.Println(Mistakes.Render(m))
+
+				duration := timer.StopTimer()
+				wpm := calculateWPM(word, duration)
+				fmt.Println("WPM: ", wpm)
 				break
 			}
 
@@ -62,11 +66,5 @@ func KeyListen(word string) {
 				mistakePrinted = true
 			}
 		}
-
 	}
-
-	duration := timer.StopTimer()
-	wpm := calculateWPM(word, duration)
-	fmt.Println("WPM: ", wpm)
-
 }
