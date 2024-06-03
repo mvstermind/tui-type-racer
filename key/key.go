@@ -6,18 +6,18 @@ import (
 	"github.com/eiannone/keyboard"
 )
 
-/*
-this has to run forever
-compare pressed key with word[i]
-then lipgloss will do some like fucking coloring or something
-i dunno
-*/
+// use valid char style if letters matched letters typed
+// use currentChar to indicate index position
+// use notTypedChar to show how many charcters are left to type
+
 func KeyListen(word string) {
+
 	// convert words into slice of runes
 	word_list := []rune(word)
 
 	// current character
 	index := 0
+	fmt.Println(NotTypedChar.Render(word))
 
 	for {
 		// get current character
@@ -34,11 +34,12 @@ func KeyListen(word string) {
 
 		// compare current character with key pressed
 		if char == word_list[index] || word_list[index] == rune(keyboard.KeySpace) {
+			fmt.Printf("%s", ValidChar.Render(string(word_list[index])))
 			// fmt.Println("Literka sie zgadza") // for debugs
 			index++
 
 			if index == len(word_list) {
-				fmt.Println("Koniec listy")
+				fmt.Printf("\n")
 				break
 			}
 		}
