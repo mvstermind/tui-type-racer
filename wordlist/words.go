@@ -31,7 +31,6 @@ func strip(b []byte) string {
 	body = strings.Replace(body, `,`, " ", len(body))
 	body = strings.TrimLeft(body, "[")
 	body = strings.TrimRight(body, "]")
-	fmt.Println(body)
 	return body
 
 }
