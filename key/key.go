@@ -2,22 +2,22 @@ package key
 
 import (
 	"fmt"
-
 	"github.com/eiannone/keyboard"
 )
 
-// use valid char style if letters matched letters typed
-// use currentChar to indicate index position
-// use notTypedChar to show how many charcters are left to type
-
 func KeyListen(word string) {
+	// mistakes counter
+	mistake := 0
 
 	// convert words into slice of runes
-	word_list := []rune(word)
+	wordList := []rune(word)
 
 	// current character
 	index := 0
 	fmt.Println(NotTypedChar.Render(word))
+
+	// flag to track if a mistake has been printed
+	mistakePrinted := false
 
 	for {
 		// get current character
@@ -33,17 +33,31 @@ func KeyListen(word string) {
 		}
 
 		// compare current character with key pressed
-		if char == word_list[index] || word_list[index] == rune(keyboard.KeySpace) {
-			fmt.Printf("%s", ValidChar.Render(string(word_list[index])))
-			// fmt.Println("Literka sie zgadza") // for debugs
-			index++
+		if char == wordList[index] || wordList[index] == rune(keyboard.KeySpace) {
+			fmt.Printf("%s", ValidChar.Render(string(wordList[index])))
 
-			if index == len(word_list) {
+			// reset mistake flag if a correct character is typed
+			mistakePrinted = false
+
+			index++
+			if index == len(wordList) {
 				fmt.Printf("\n")
+
+				m := fmt.Sprintf("Mistakes: %v", mistake)
+				fmt.Println(Mistakes.Render(m))
 				break
 			}
+
+		} else {
+			// print mistake only once
+			if !mistakePrinted {
+				fmt.Printf("%s", Mistakes.Render(string(wordList[index])))
+				mistake++
+				mistakePrinted = true
+				index++
+			}
 		}
-		// for debugs
-		// fmt.Printf("you pressed %q\n", char)
+
 	}
 }
+
