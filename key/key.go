@@ -33,8 +33,8 @@ func KeyListen(word string) {
 		}
 
 		// compare current character with key pressed
-		if char == word_list[index] {
-			fmt.Println("Literka sie zgadza") // for debugs
+		if char == word_list[index] || word_list[index] == rune(keyboard.KeySpace) {
+			// fmt.Println("Literka sie zgadza") // for debugs
 			index++
 
 			if index == len(word_list) {
@@ -42,16 +42,6 @@ func KeyListen(word string) {
 				break
 			}
 		}
-
-		if word_list[index] == rune(keyboard.KeySpace) {
-			index++
-			// Check if the entire word has been matched
-			if index == len(word_list) {
-				fmt.Println("Koniec listy")
-				break
-			}
-		}
-
 		// for debugs
 		// fmt.Printf("you pressed %q\n", char)
 	}
