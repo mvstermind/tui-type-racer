@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/mvstermind/terminal-typeracer/wordlist"
 	"math/rand"
+	"os"
+	"strconv"
 	"strings"
 	"sync"
+
+	"github.com/mvstermind/terminal-typeracer/wordlist"
 )
 
 func randomSeed() string {
@@ -22,8 +25,15 @@ func generateList() []string {
 	wordChannel := make(chan string)
 	var wg sync.WaitGroup
 
+	// use keyword argument to genreate len of list
+	osarg := os.Args[1]
+	o, err := strconv.Atoi(osarg)
+	if err != nil {
+		fmt.Println("error: ", err)
+		return nil
+	}
 	// this is so it will generate 20 words in the list
-	totalAmount := 4
+	totalAmount := o
 
 	// start totalAmount goroutines
 	for i := 0; i < totalAmount; i++ {
