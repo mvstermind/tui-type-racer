@@ -7,3 +7,5 @@ todo:
 - make time start running as soon as first key is pressed
 
 - find way to maybe speed it up? 
+
+- add word shuffling
