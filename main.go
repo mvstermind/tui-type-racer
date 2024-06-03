@@ -1,6 +1,5 @@
 package main
 
-// https://github.com/eiannone/keyboard?tab=readme-ov-file
 import (
 	"github.com/mvstermind/terminal-typeracer/key"
 )

@@ -2,7 +2,9 @@ package key
 
 import (
 	"fmt"
+
 	"github.com/eiannone/keyboard"
+	"github.com/mvstermind/terminal-typeracer/timer"
 )
 
 func KeyListen(word string) {
@@ -15,6 +17,9 @@ func KeyListen(word string) {
 	// current character
 	index := 0
 	fmt.Println(NotTypedChar.Render(word))
+
+	// start timer as soon as it's printed
+	timer.StartTimer()
 
 	// flag to track if a mistake has been printed
 	mistakePrinted := false
@@ -52,12 +57,16 @@ func KeyListen(word string) {
 			// print mistake only once
 			if !mistakePrinted {
 				fmt.Printf("%s", Mistakes.Render(string(wordList[index])))
+				index++
 				mistake++
 				mistakePrinted = true
-				index++
 			}
 		}
 
 	}
-}
 
+	duration := timer.StopTimer()
+	wpm := calculateWPM(word, duration)
+	fmt.Println("WPM: ", wpm)
+
+}
