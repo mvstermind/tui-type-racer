@@ -6,19 +6,46 @@ import (
 	"github.com/eiannone/keyboard"
 )
 
+/*
+this has to run forever
+compare pressed key with word[i]
+then lipgloss will do some like fucking coloring or something
+i dunno
+*/
 func KeyListen(word string) {
-	/*
-		this has to run forever
-		compare pressed key with word[i]
-		then lipgloss will do some like fucking coloring or something
-		i dunno
-	*/
+	// convert words into slice of runes
+	word_list := []rune(word)
+
+	// current character
+	index := 0
 
 	for {
-		char, _, err := keyboard.GetSingleKey()
+		// get current character
+		char, key, err := keyboard.GetSingleKey()
+
 		if err != nil {
 			fmt.Println(err)
 		}
+
+		if key == keyboard.KeyEsc {
+			fmt.Println("Exiting...")
+			break
+		}
+
+		// compare current character with key pressed
+		if char == word_list[index] {
+			fmt.Println("Literka sie zgadza")
+			index++
+
+			if index == len(word_list) {
+				fmt.Println("Koniec listy")
+				break
+			}
+		} else {
+			fmt.Println("Incorrect character")
+		}
+
+		// for debugs
 		fmt.Printf("you pressed %q\n", char)
 	}
 }
