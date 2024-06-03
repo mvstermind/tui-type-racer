@@ -5,18 +5,18 @@ import (
 	"fmt"
 	"math/rand"
 	"strings"
+	"sync"
 
 	"github.com/mvstermind/terminal-typeracer/key"
-	getwords "github.com/mvstermind/terminal-typeracer/wordlist"
+	"github.com/mvstermind/terminal-typeracer/wordlist"
 )
 
 func main() {
 
 	wordSlice := generateList()
+	words := sliceToString(wordSlice)
+	fmt.Println(words)
 
-	fmt.Println(wordSlice)
-
-	words := strings.Join(wordSlice, " ")
 	// do this when it's fucking got full list
 	key.KeyListen(words)
 
@@ -33,23 +33,46 @@ func randomSeed() string {
 }
 
 func generateList() []string {
+	wordChannel := make(chan string)
+	var wg sync.WaitGroup
 
-	var wordList []string
-
-	// it's 4 cuz i want to have 20 words
-	// random seed generates 5 words
+	// this is so it will generate 20 words in the list
 	totalAmount := 4
+
+	// start totalAmount goroutines
 	for i := 0; i < totalAmount; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			wordSeed := randomSeed()
+			word, err := wordlist.Get(wordSeed)
+			if err != nil {
+				fmt.Printf("error: %v", err)
+				return
+			}
+			wordChannel <- word
+		}()
+	}
 
-		wordSeed := randomSeed()
+	// close the channel once all goroutines are done
+	go func() {
+		wg.Wait()
+		close(wordChannel)
+	}()
 
-		word, err := getwords.Get(wordSeed)
-		if err != nil {
-			fmt.Printf("error: %v", err)
-
-		}
+	// collect results from the channel
+	var wordList []string
+	for word := range wordChannel {
 		wordList = append(wordList, word)
 	}
 
 	return wordList
+}
+
+func sliceToString(s []string) string {
+
+	w := strings.Join(s, " ")
+	w = strings.TrimLeft(w, "[")
+	w = strings.TrimRight(w, "]")
+	return w
 }
