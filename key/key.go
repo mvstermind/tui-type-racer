@@ -9,7 +9,7 @@ import (
 
 func KeyListen(word string) {
 	// mistakes counter
-	mistake := 0
+	missedCharacter := 0
 
 	// convert words into slice of runes
 	wordList := []rune(word)
@@ -48,7 +48,7 @@ func KeyListen(word string) {
 			if index == len(wordList) {
 				fmt.Printf("\n")
 
-				m := fmt.Sprintf("Mistakes: %v", mistake)
+				m := fmt.Sprintf(`Accuracy: %v %%`, accuracy(wordList, missedCharacter))
 				fmt.Println(mistakes.Render(m))
 
 				duration := timer.StopTimer()
@@ -62,7 +62,7 @@ func KeyListen(word string) {
 			if !mistakePrinted {
 				fmt.Printf("%s", mistakes.Render(string(wordList[index])))
 				index++
-				mistake++
+				missedCharacter++
 				mistakePrinted = true
 			}
 		}
