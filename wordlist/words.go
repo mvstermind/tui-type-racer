@@ -1,10 +1,13 @@
 package wordlist
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"strings"
+	"time"
 )
 
 func Get(url string) (string, error) {
@@ -21,16 +24,35 @@ func Get(url string) (string, error) {
 		return "", err
 	}
 
-	bdy := strip(body)
-	return string(bdy), nil
+	shuffledWords, err := shuffleNFormat(body)
+	if err != nil {
+		fmt.Printf("error: %v", err)
+		return "", err
+	}
+
+	return shuffledWords, nil
 }
 
-func strip(b []byte) string {
-	body := string(b)
-	body = strings.Replace(body, `"`, "", len(body))
-	body = strings.Replace(body, `,`, " ", len(body))
-	body = strings.TrimLeft(body, "[")
-	body = strings.TrimRight(body, "]")
-	return body
+func shuffleNFormat(b []byte) (string, error) {
+	var words []string
+	err := json.Unmarshal(b, &words)
+	if err != nil {
+		return "", err
+	}
 
+	shuffle(words)
+
+	formatted := strings.Join(words, " ")
+	return formatted, nil
 }
+
+func shuffle(s []string) {
+	// make sure it's "more randomized"
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	for i := range s {
+		j := r.Intn(len(s))
+		s[i], s[j] = s[j], s[i]
+	}
+}
+
